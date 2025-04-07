@@ -11,7 +11,7 @@ Este inspirat de cartea [One-to-One Bible Reading](https://matthiasmedia.com/pro
 
 ## 🔗 Accesează site-ul
 
-👉 [Vezi site-ul online](https://ovidiuchis.github.io/m8))    
+👉 [Vezi site-ul online](https://unu-unu-cj.github.io/m8/)    
 
 
 ## 📄 Sursa conținutului
