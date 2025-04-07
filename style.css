@@ -125,7 +125,7 @@ footer {
   color: #fff; /* White text */
   text-align: center;
   padding: 1rem 0;
-  margin-top: 2rem;
+  margin-top: 1rem;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -157,32 +157,4 @@ footer a:hover {
   #content {
     padding: 1rem;
   }
-}
-
-.week-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.week-card {
-  background: #007bff;
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.week-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.week-card.active {
-  background: #0056b3;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
