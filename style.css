@@ -12,14 +12,14 @@ body {
 header {
   background: #333; /* Dark grey header */
   color: #fff; /* White text */
-  padding: 1.5rem 0;
+  padding: 1rem 0;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
   font-size: 1.5rem;
-  margin: 1rem 1rem;
+  margin: 0.5rem 0.5rem;
 }
 
 header h2 {
