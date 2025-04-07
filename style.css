@@ -18,12 +18,12 @@ header {
 }
 
 header h1 {
-  font-size: 2rem;
-  margin: 0.5rem 0;
+  font-size: 1.5rem;
+  margin: 1rem 1rem;
 }
 
 header h2 {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin: 0;
   color: #e0e0e0;
 }
@@ -36,8 +36,20 @@ main {
 }
 
 #week-selector {
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically align label and dropdown */
+  justify-content: center; /* Center the content */
+  gap: 0.5rem; /* Add spacing between label and dropdown */
   margin-bottom: 0.5rem; /* Reduce space between selector and next content div */
   text-align: center;
+}
+
+#week-selector label {
+  font-size: 1.2rem; /* Keep enhanced font size */
+  font-weight: bold; /* Keep bold styling */
+  color: #0056b3; /* Keep distinct color */
+  margin-bottom: 0; /* Remove bottom margin */
+  display: inline; /* Ensure it stays inline */
 }
 
 #week {
