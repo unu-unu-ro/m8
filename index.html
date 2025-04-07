@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>8 Săptămâni prin Evanghelia după Marcu</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Ctext y='28' font-size='28'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>8 Săptămâni prin Evanghelia după Marcu</h1>
+      <h2>ghid de discuție pentru întâlniri unu-la-unu</h2>
+    </header>
+    <main>
+      <section id="week-selector">
+        <label for="week">Săptămâna:</label>
+        <select id="week">
+          <option value="1">unu</option>
+          <option value="2">doi</option>
+          <option value="3">trei</option>
+          <option value="4">patru</option>
+          <option value="5">cinci</option>
+          <option value="6">șase</option>
+          <option value="7">șapte</option>
+          <option value="8">opt</option>
+        </select>
+      </section>
+      <section id="content">
+        <h2 id="week-title">Săptămâna 1</h2>
+        <ul id="questions">
+          <!-- Întrebările vor fi încărcate dinamic aici -->
+        </ul>
+      </section>
+    </main>
+    <footer>
+      <p>
+        Extras din
+        <a
+          href="https://matthiasmedia.com/products/one-to-one-bible-reading"
+          target="_blank"
+          >One-to-One Bible Reading</a
+        >
+        de David Helm.
+      </p>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+      // Remove the grid-based week selector script
+      document.querySelectorAll(".week-card").forEach((card) => {
+        card.removeEventListener("click", () => {});
+      });
+    </script>
+  </body>
+</html>
