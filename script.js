@@ -23,17 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
       weekSelector.addEventListener("change", () => {
         const selectedWeek = weekSelector.value;
         localStorage.setItem("selectedWeek", selectedWeek); // Save selected week
-        const weekKey = `Săptămâna ${selectedWeek} (Marcu ${getWeekRange(
-          selectedWeek
-        )})`;
+
+        // Dynamically get the week key and range
+        const weekKey = Object.keys(data).find((key) =>
+          key.startsWith(`Săptămâna ${selectedWeek}`)
+        );
+        const weekRange = weekKey.match(/\((.*?)\)/)?.[1] || "";
 
         // Update title
         weekTitle.textContent = `📖 Săptămâna ${selectedWeek}`;
 
         // Update text reference
-        const weekRange = getWeekRange(selectedWeek);
-        textReference.textContent = `Marcu ${weekRange}`;
-        textReference.href = getBibleUrl(selectedWeek);
+        textReference.textContent = `${weekRange}`;
+        textReference.href = getBibleUrl(weekRange);
 
         // Ensure the text reference is appended correctly
         weekTitle.appendChild(textReference);
@@ -53,33 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
       weekSelector.dispatchEvent(new Event("change"));
     });
 
-  // Helper function to get week range
-  function getWeekRange(week) {
-    const ranges = [
-      "1:1-15",
-      "2:1-12",
-      "3:7-35",
-      "8:22-38",
-      "10:17-45",
-      "14:53-15:15",
-      "15:16-39",
-      "15:42-16:8",
-    ];
-    return ranges[week - 1];
-  }
-
   // Helper function to get Bible.com URL
-  function getBibleUrl(week) {
-    const urls = [
-      "https://www.bible.com/bible/126/MRK.1.1-15.NTR",
-      "https://www.bible.com/bible/126/MRK.2.1-12.NTR",
-      "https://www.bible.com/bible/126/MRK.3.7-35.NTR",
-      "https://www.bible.com/bible/126/MRK.8.22-38.NTR",
-      "https://www.bible.com/bible/126/MRK.10.17-45.NTR",
-      "https://www.bible.com/bible/126/MRK.14.53-15.15.NTR",
-      "https://www.bible.com/bible/126/MRK.15.16-39.NTR",
-      "https://www.bible.com/bible/126/MRK.15.42-16.8.NTR",
-    ];
-    return urls[week - 1];
+  function getBibleUrl(range) {
+    const baseUrl = "https://www.bible.com/bible/126/MRK.";
+    return `${baseUrl}${range
+      .replace(/:/g, ".")
+      .replace(/-/g, "-")
+      .replace("Marcu ", "")}.NTR`;
   }
 });
