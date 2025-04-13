@@ -3,16 +3,15 @@
 Acest site oferă un ghid simplu pentru citirea și discuția Evangheliei după Marcu pe parcursul a 8 săptămâni, în cadrul întâlnirilor unu-la-unu.  
 Este inspirat de cartea [One-to-One Bible Reading](https://matthiasmedia.com/products/one-to-one-bible-reading) scrisă de David Helm, publicată de Matthias Media.
 
+## 🔗 Accesează site-ul
+
+👉 [Vezi site-ul online](https://unu-unu-ro.github.io/m8/)  
+
 ## ✨ Ce conține
 
 - Întrebări clare, săptămână cu săptămână
 - Design minimalist și modern
 - Resursă utilă pentru ucenicie spirituală, evanghelizare sau mentorare
-
-## 🔗 Accesează site-ul
-
-👉 [Vezi site-ul online](https://unu-unu-ro.github.io/m8/)    
-
 
 ## 📄 Sursa conținutului
 
