@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const weekSelector = document.getElementById("week");
   const weekTitle = document.getElementById("week-title");
   const questionsList = document.getElementById("questions");
+  const modeToggle = document.getElementById("mode-toggle");
 
   // Create a container for the text reference
   const textReference = document.createElement("a");
@@ -11,23 +12,60 @@ document.addEventListener("DOMContentLoaded", () => {
   textReference.target = "_blank";
   weekTitle.appendChild(textReference);
 
-  // Load questions from JSON file
-  fetch("intrebari.json")
-    .then((response) => response.json())
-    .then((data) => {
-      // Load saved week from localStorage
-      const savedWeek = localStorage.getItem("selectedWeek") || "1";
-      weekSelector.value = savedWeek;
+  // Check for saved mode preference
+  const kidsMode = localStorage.getItem("kidsMode") === "true";
+  modeToggle.checked = kidsMode;
+  if (kidsMode) {
+    document.body.classList.add("kids-mode");
+  }
 
-      // Update content when week is selected
-      weekSelector.addEventListener("change", () => {
-        const selectedWeek = weekSelector.value;
-        localStorage.setItem("selectedWeek", selectedWeek); // Save selected week
+  // Toggle between adult and kids mode
+  modeToggle.addEventListener("change", () => {
+    const isKidsMode = modeToggle.checked;
+    localStorage.setItem("kidsMode", isKidsMode);
 
+    document.body.classList.toggle("kids-mode", isKidsMode);
+
+    // Reload questions for current selection
+    loadQuestions(weekSelector.value);
+  });
+
+  // Load saved week from localStorage
+  const savedWeek = localStorage.getItem("selectedWeek") || "1";
+  weekSelector.value = savedWeek;
+
+  // Update content when week is selected
+  weekSelector.addEventListener("change", () => {
+    const selectedWeek = weekSelector.value;
+    localStorage.setItem("selectedWeek", selectedWeek); // Save selected week
+    loadQuestions(selectedWeek);
+  });
+
+  // Function to load questions based on selected week and mode
+  function loadQuestions(selectedWeek) {
+    const isKidsMode = modeToggle.checked;
+    const jsonFile = isKidsMode
+      ? "assets/intrebaricopii.json"
+      : "assets/intrebari.json";
+
+    fetch(jsonFile)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
         // Dynamically get the week key and range
         const weekKey = Object.keys(data).find((key) =>
           key.startsWith(`Săptămâna ${selectedWeek}`)
         );
+
+        if (!weekKey) {
+          console.error("Week key not found:", `Săptămâna ${selectedWeek}`);
+          return;
+        }
+
         const weekRange = weekKey.match(/\((.*?)\)/)?.[1] || "";
 
         // Update title
@@ -49,18 +87,21 @@ document.addEventListener("DOMContentLoaded", () => {
             questionsList.appendChild(li);
           });
         }
+      })
+      .catch((error) => {
+        console.error("Error loading questions:", error);
+        questionsList.innerHTML = `<li class="error">A apărut o eroare la încărcarea întrebărilor. Te rugăm să încerci din nou.</li>`;
       });
+  }
 
-      // Trigger initial load
-      weekSelector.dispatchEvent(new Event("change"));
-    });
+  // Load initial questions
+  loadQuestions(weekSelector.value);
 
   // Helper function to get Bible.com URL
   function getBibleUrl(range) {
+    // Remove any "Marcu" text that might be in the range
+    const cleanRange = range.replace(/Marcu\s*/i, "");
     const baseUrl = "https://www.bible.com/bible/126/MRK.";
-    return `${baseUrl}${range
-      .replace(/:/g, ".")
-      .replace(/-/g, "-")
-      .replace("Marcu ", "")}.NTR`;
+    return `${baseUrl}${cleanRange.replace(/:/g, ".").replace(/-/g, "-")}.NTR`;
   }
 });
