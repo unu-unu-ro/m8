@@ -1,3 +1,4 @@
+
 # 8 Săptămâni prin Evanghelia după Marcu 📖
 
 Acest site oferă un ghid simplu pentru citirea și discuția Evangheliei după Marcu pe parcursul a 8 săptămâni, în cadrul întâlnirilor unu-la-unu.  
@@ -12,6 +13,18 @@ Este inspirat de cartea [One-to-One Bible Reading](https://matthiasmedia.com/pro
 - Întrebări clare, săptămână cu săptămână
 - Design minimalist și modern
 - Resursă utilă pentru ucenicie spirituală, evanghelizare sau mentorare
+
+## 🧒 Versiunea pentru Copii (KIDS)
+
+Există și o variantă adaptată pentru copii a ghidului „8 Săptămâni prin Evanghelia după Marcu”!  
+Această versiune folosește întrebări mai simple și un limbaj accesibil pentru copii de 7-12 ani.
+
+👉 **Vezi varianta KIDS aici folosind switch-ul din footer-ul siteului**
+
+### Ce aduce diferit varianta KIDS:
+- Întrebări mai scurte și mai ușor de înțeles
+- Un design și mai prietenos
+- Ideală pentru părinți sau lideri care citesc Biblia cu copiii
 
 ## 📄 Sursa conținutului
 
