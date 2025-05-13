@@ -6,7 +6,7 @@ Este inspirat de cartea [One-to-One Bible Reading](https://matthiasmedia.com/pro
 
 ## 🔗 Accesează site-ul
 
-👉 [Vezi site-ul online](https://unu-unu-ro.github.io/m8/)  
+[![Live](https://img.shields.io/badge/Vezi_live-m8.unu--unu.ro-brightgreen?style=for-the-badge)](https://m8.unu-unu.ro)
 
 ## ✨ Ce conține
 
