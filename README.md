@@ -10,27 +10,17 @@ Este inspirat de cartea [One-to-One Bible Reading](https://matthiasmedia.com/pro
 
 ## ✨ Ce conține
 
-- Întrebări clare, săptămână cu săptămână
-- Disponibil în română și engleză (comutatorul RO · EN din colțul paginii, sau `?lang=en` în adresă)
-- Referințele biblice deschid pasajul pe bible.com (NTR pentru română, ESV pentru engleză)
-- Design minimalist și modern
-- Resursă utilă pentru ucenicie spirituală, evanghelizare sau mentorare
-
-## 🧒 Versiunea pentru Copii (KIDS)
-
-Există și o variantă adaptată pentru copii a ghidului „8 Săptămâni prin Evanghelia după Marcu”!  
-Această versiune folosește întrebări mai simple și un limbaj accesibil pentru copii de 7-12 ani.
-
-👉 **Vezi varianta KIDS aici folosind switch-ul din footer-ul siteului**
-
-### Ce aduce diferit varianta KIDS:
-- Întrebări mai scurte și mai ușor de înțeles
-- Un design și mai prietenos
-- Ideală pentru părinți sau lideri care citesc Biblia cu copiii
+- Întrebări clare, săptămână cu săptămână, pentru 8 pasaje din Evanghelia după Marcu
+- **Română și engleză**: comutatorul **RO · EN** din colțul din dreapta-sus al paginii; alegerea se reține în browser. Poți trimite direct un link către o limbă: `https://m8.unu-unu.ro/?lang=en`
+- Referința biblică a fiecărei săptămâni deschide pasajul pe bible.com (NTR pentru română, ESV pentru engleză)
+- **Mod întunecat**: urmează implicit setarea sistemului; comutatorul din josul paginii o suprascrie
+- Navigare între săptămâni din cronologia de sus, din butoanele „anterioară / următoare”, cu săgețile ← → de pe tastatură sau prin swipe pe telefon; săptămâna curentă se reține între vizite
+- Design minimalist, tipografic, gândit pentru citit pe telefon și pe desktop
 
 ## 📄 Sursa conținutului
 
-Planul de citire și întrebările sunt **extrase și adaptate** din cartea *One-to-One Bible Reading* de David Helm.  
+Planul de citire și întrebările sunt **extrase și adaptate** din cartea *One-to-One Bible Reading* de David Helm (© Matthias Media și Holy Trinity Church, 2011).  
+Întrebările în engleză sunt cele din materialul original; cele în română sunt traducerea lor.  
 Cartea poate fi achiziționată de pe [matthiasmedia.com](https://matthiasmedia.com/products/one-to-one-bible-reading).
 
 ## 💡 Sugestii de utilizare
@@ -41,7 +31,18 @@ Cartea poate fi achiziționată de pe [matthiasmedia.com](https://matthiasmedia.
 
 ## 🛠️ Dezvoltare
 
-Acest site este realizat ca o aplicație statică și găzduit gratuit pe GitHub Pages.
+Aplicație statică (HTML, CSS, JavaScript, fără dependențe), găzduită pe GitHub Pages.
+
+```
+index.html                  structura paginii
+script.js                   încărcarea întrebărilor, limbă, temă, navigare
+assets/style.css            stilurile
+assets/intrebari.json       întrebările în română
+assets/intrebari.en.json    întrebările în engleză
+assets/intrebaricopii.json  set de întrebări adaptat pentru copii (7-12 ani), nefolosit încă în interfață
+```
+
+Pentru a rula local, servește directorul cu orice server static (de exemplu `npx serve .`); fișierele JSON se încarcă prin `fetch`, așa că deschiderea directă a `index.html` din sistemul de fișiere nu funcționează.
 
 ## 📬 Feedback
 
