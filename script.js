@@ -10,11 +10,94 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next");
   const pagerPos = document.getElementById("pager-pos");
   const themeToggle = document.getElementById("theme-toggle");
+  const langToggle = document.getElementById("lang-toggle");
   const themeColor = document.querySelector('meta[name="theme-color"]');
 
-  const DATA_FILE = "assets/intrebari.json";
-  let cachedData = null;
-  let current = clampWeek(parseInt(localStorage.getItem("selectedWeek"), 10) || 1);
+  // ---- Limbă / Language ----------------------------------------------------
+  // Toate textele de interfață și sursa de date, pe limbă.
+  const I18N = {
+    ro: {
+      file: "assets/intrebari.json",
+      title: "8 Săptămâni prin Evanghelia după Marcu",
+      subtitle: "ghid de discuție pentru întâlniri unu-la-unu",
+      timelineAria: "Săptămânile planului",
+      pagerAria: "Săptămâna anterioară / următoare",
+      footerPre: "extras din",
+      footerPost: "de David Helm",
+      darkMode: "Mod întunecat",
+      week: (n) => `Săptămâna ${n}`,
+      error:
+        "A apărut o eroare la încărcarea întrebărilor. Te rugăm să încerci din nou.",
+      book: /^(Marcu|Mark)\s*/i,
+      // Noua Traducere Românească (NTR) pe bible.com
+      bible: (ref) => `https://www.bible.com/bible/126/MRK.${ref}.NTR`,
+    },
+    en: {
+      file: "assets/intrebari.en.json",
+      title: "8 Weeks through Mark’s Gospel",
+      subtitle: "a discussion guide for one-to-one meetings",
+      timelineAria: "Weeks of the plan",
+      pagerAria: "Previous / next week",
+      footerPre: "extracted from",
+      footerPost: "by David Helm",
+      darkMode: "Dark mode",
+      week: (n) => `Week ${n}`,
+      error:
+        "Something went wrong while loading the questions. Please try again.",
+      book: /^(Marcu|Mark)\s*/i,
+      // English Standard Version (ESV) pe bible.com — traducerea citată în ghidul original
+      bible: (ref) => `https://www.bible.com/bible/59/MRK.${ref}.ESV`,
+    },
+  };
+
+  function normalizeLang(value) {
+    return value === "en" ? "en" : value === "ro" ? "ro" : null;
+  }
+
+  // Prioritate: ?lang= în URL → alegerea salvată → română
+  let lang =
+    normalizeLang(new URLSearchParams(location.search).get("lang")) ||
+    normalizeLang(localStorage.getItem("lang")) ||
+    "ro";
+  let t = I18N[lang];
+
+  function applyLanguage() {
+    t = I18N[lang];
+    document.documentElement.lang = lang;
+    document.title = t.title;
+
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      el.textContent = t[el.dataset.i18n];
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      el.setAttribute("aria-label", t[el.dataset.i18nAria]);
+    });
+
+    langToggle.querySelectorAll(".lang-toggle__btn").forEach((btn) => {
+      const active = btn.dataset.lang === lang;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", String(active));
+    });
+  }
+
+  function setLanguage(next) {
+    next = normalizeLang(next);
+    if (!next || next === lang) return;
+    lang = next;
+    localStorage.setItem("lang", lang);
+    applyLanguage();
+    loadData()
+      .then((data) => {
+        buildTimeline(data);
+        render(data, 0);
+      })
+      .catch(showError);
+  }
+
+  langToggle.addEventListener("click", (event) => {
+    const btn = event.target.closest(".lang-toggle__btn");
+    if (btn) setLanguage(btn.dataset.lang);
+  });
 
   // ---- Dark mode -----------------------------------------------------------
   // Implicit: preferința sistemului. Comutatorul salvează o alegere explicită.
@@ -48,9 +131,15 @@ document.addEventListener("DOMContentLoaded", () => {
   applyTheme();
 
   // ---- Data ----------------------------------------------------------------
+  const cache = {}; // pe fișier / limbă
+  let current = clampWeek(
+    parseInt(localStorage.getItem("selectedWeek"), 10) || 1
+  );
+
   function loadData() {
-    if (cachedData) return Promise.resolve(cachedData);
-    return fetch(DATA_FILE)
+    const file = t.file;
+    if (cache[file]) return Promise.resolve(cache[file]);
+    return fetch(file)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -58,14 +147,16 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then((data) => {
-        cachedData = data;
+        cache[file] = data;
         return data;
       });
   }
 
+  // Cheia săptămânii = prima cheie al cărei prim număr e săptămâna cerută
+  // („Săptămâna 3 (Marcu 3:7-35)” / „Week 3 (Mark 3:7-35)”).
   function weekKey(data, week) {
-    return Object.keys(data).find((key) =>
-      key.startsWith(`Săptămâna ${week}`)
+    return Object.keys(data).find(
+      (key) => parseInt(key.match(/\d+/)?.[0], 10) === week
     );
   }
 
@@ -74,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function shortRef(range) {
-    return range.replace(/Marcu\s*/i, "");
+    return range.replace(t.book, "");
   }
 
   function clampWeek(n) {
@@ -94,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.type = "button";
       btn.className = "timeline__step";
       btn.dataset.week = n;
-      btn.setAttribute("aria-label", `Săptămâna ${n}`);
+      btn.setAttribute("aria-label", t.week(n));
 
       const nr = document.createElement("span");
       nr.className = "timeline__nr";
@@ -136,12 +227,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function render(data, direction) {
     const key = weekKey(data, current);
     if (!key) {
-      console.error("Week key not found:", `Săptămâna ${current}`);
+      console.error("Week key not found:", t.week(current));
       return;
     }
     const range = rangeOf(key);
 
-    weekLabel.textContent = `Săptămâna ${current}`;
+    weekLabel.textContent = t.week(current);
     textReference.textContent = range;
     textReference.href = getBibleUrl(range);
 
@@ -182,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const lbl = document.createElement("span");
     lbl.className = "pager__lbl";
     lbl.textContent =
-      kind === "prev" ? `← Săptămâna ${week}` : `Săptămâna ${week} →`;
+      kind === "prev" ? `← ${t.week(week)}` : `${t.week(week)} →`;
 
     const ref = document.createElement("span");
     ref.className = "pager__ref";
@@ -193,7 +284,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showError(error) {
     console.error("Error loading questions:", error);
-    questionsList.innerHTML = `<li class="error">A apărut o eroare la încărcarea întrebărilor. Te rugăm să încerci din nou.</li>`;
+    questionsList.innerHTML = "";
+    const li = document.createElement("li");
+    li.className = "error";
+    li.textContent = t.error;
+    questionsList.appendChild(li);
   }
 
   // ---- Navigation ----------------------------------------------------------
@@ -251,6 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   // ---- Init ----------------------------------------------------------------
+  applyLanguage();
   loadData()
     .then((data) => {
       buildTimeline(data);
@@ -258,11 +354,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(showError);
 
-  // Helper function to get Bible.com URL
+  // Helper: URL bible.com pentru referință („Marcu 14:53-15:15” → „14.53-15.15”)
   function getBibleUrl(range) {
-    // Remove any "Marcu" text that might be in the range
-    const cleanRange = range.replace(/Marcu\s*/i, "");
-    const baseUrl = "https://www.bible.com/bible/126/MRK.";
-    return `${baseUrl}${cleanRange.replace(/:/g, ".").replace(/-/g, "-")}.NTR`;
+    const cleanRange = range.replace(t.book, "").replace(/:/g, ".");
+    return t.bible(cleanRange);
   }
 });

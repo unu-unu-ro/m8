@@ -12,6 +12,8 @@
           if (t === "dark" || t === "light") {
             document.documentElement.setAttribute("data-theme", t);
           }
+          var l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("lang");
+          if (l === "en") document.documentElement.lang = "en";
         } catch (e) {}
       })();
     </script>
@@ -21,7 +23,7 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/style.css?v=3.0" />
+    <link rel="stylesheet" href="assets/style.css?v=3.1" />
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Ctext y='28' font-size='28'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E"
@@ -29,12 +31,18 @@
   </head>
   <body>
     <div class="sheet">
+      <div id="lang-toggle" class="lang-toggle" role="group" aria-label="Limbă / Language">
+        <button type="button" class="lang-toggle__btn" data-lang="ro" lang="ro" aria-pressed="true">RO</button>
+        <span class="lang-toggle__sep" aria-hidden="true">·</span>
+        <button type="button" class="lang-toggle__btn" data-lang="en" lang="en" aria-pressed="false">EN</button>
+      </div>
+
       <header class="masthead">
-        <h1>8 Săptămâni prin Evanghelia după Marcu</h1>
-        <h2>ghid de discuție pentru întâlniri unu-la-unu</h2>
+        <h1 data-i18n="title">8 Săptămâni prin Evanghelia după Marcu</h1>
+        <h2 data-i18n="subtitle">ghid de discuție pentru întâlniri unu-la-unu</h2>
       </header>
 
-      <nav class="timeline" aria-label="Săptămânile planului">
+      <nav class="timeline" data-i18n-aria="timelineAria" aria-label="Săptămânile planului">
         <ol id="timeline" class="timeline__list" style="--pos: 0">
           <!-- Cele 8 săptămâni sunt generate dinamic aici -->
         </ol>
@@ -53,7 +61,7 @@
               <!-- Întrebările vor fi încărcate dinamic aici -->
             </ol>
           </div>
-          <nav class="pager" aria-label="Săptămâna anterioară / următoare">
+          <nav class="pager" data-i18n-aria="pagerAria" aria-label="Săptămâna anterioară / următoare">
             <button type="button" id="prev" class="pager__btn pager__btn--prev"></button>
             <span id="pager-pos" class="pager__pos"></span>
             <button type="button" id="next" class="pager__btn pager__btn--next"></button>
@@ -63,25 +71,25 @@
 
       <footer>
         <p>
-          extras din
+          <span data-i18n="footerPre">extras din</span>
           <a
             href="https://matthiasmedia.com/products/one-to-one-bible-reading"
             target="_blank"
             rel="noopener"
             >One-to-One Bible Reading</a
           >
-          de David Helm
+          <span data-i18n="footerPost">de David Helm</span>
         </p>
         <div class="mode-toggle">
           <label class="switch">
             <input type="checkbox" id="theme-toggle" />
             <span class="slider round"></span>
           </label>
-          <small>Mod întunecat</small>
+          <small data-i18n="darkMode">Mod întunecat</small>
         </div>
       </footer>
     </div>
-    <script src="script.js?v=3.0"></script>
+    <script src="script.js?v=3.1"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer

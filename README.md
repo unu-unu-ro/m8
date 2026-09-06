@@ -11,6 +11,8 @@ Este inspirat de cartea [One-to-One Bible Reading](https://matthiasmedia.com/pro
 ## ✨ Ce conține
 
 - Întrebări clare, săptămână cu săptămână
+- Disponibil în română și engleză (comutatorul RO · EN din colțul paginii, sau `?lang=en` în adresă)
+- Referințele biblice deschid pasajul pe bible.com (NTR pentru română, ESV pentru engleză)
 - Design minimalist și modern
 - Resursă utilă pentru ucenicie spirituală, evanghelizare sau mentorare
 
