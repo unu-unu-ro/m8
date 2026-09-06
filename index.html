@@ -1,24 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#faf8f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141513" media="(prefers-color-scheme: dark)" />
     <title>8 Săptămâni prin Evanghelia după Marcu</title>
-    <link rel="stylesheet" href="assets/style.css?v=2.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css?v=3.0" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Ctext y='28' font-size='28'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2323409a'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' fill='%23faf8f3'%3E8%3C/text%3E%3C/svg%3E"
     />
   </head>
   <body>
-    <header>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="masthead">
+      <div class="masthead__rule" aria-hidden="true"></div>
       <h1>8 Săptămâni prin Evanghelia după Marcu</h1>
       <h2>ghid de discuție pentru întâlniri unu-la-unu</h2>
     </header>
+
+    <div class="timeline-sentinel" aria-hidden="true"></div>
+
+    <nav class="timeline" id="timeline" aria-label="Săptămâna">
+      <div class="timeline__inner">
+        <button
+          type="button"
+          class="timeline__arrow"
+          id="prev-week"
+          data-dir="-1"
+          aria-label="Săptămâna precedentă"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M15 5 8 12l7 7" />
+          </svg>
+        </button>
+
+        <div class="timeline__rail" id="week-rail">
+          <span class="timeline__track" aria-hidden="true">
+            <span class="timeline__progress" id="timeline-progress"></span>
+          </span>
+          <!-- Reperele săptămânilor sunt generate dinamic aici -->
+        </div>
+
+        <button
+          type="button"
+          class="timeline__arrow"
+          id="next-week"
+          data-dir="1"
+          aria-label="Săptămâna următoare"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="m9 5 7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
     <main>
-      <section id="week-selector">
+      <section id="week-selector" class="visually-hidden">
         <label for="week">Săptămâna:</label>
-        <select id="week">
+        <select id="week" tabindex="-1" aria-hidden="true">
           <option value="1">unu</option>
           <option value="2">doi</option>
           <option value="3">trei</option>
@@ -29,19 +78,34 @@
           <option value="8">opt</option>
         </select>
       </section>
-      <section id="content">
-        <h2 id="week-title">Săptămâna 1</h2>
-        <ul id="questions">
-          <!-- Întrebările vor fi încărcate dinamic aici -->
-        </ul>
-      </section>
+
+      <article id="content">
+        <div class="sheet__inner" id="sheet-inner">
+          <div class="sheet__head">
+            <div class="sheet__heading" aria-live="polite">
+              <h2 id="week-title">Săptămâna 1</h2>
+              <!-- Referința pasajului este inserată dinamic aici -->
+            </div>
+            <p class="folio" id="folio" aria-hidden="true">
+              <span class="folio__now">01</span
+              ><span class="folio__sep">/</span
+              ><span class="folio__total">08</span>
+            </p>
+          </div>
+          <ol id="questions">
+            <!-- Întrebările vor fi încărcate dinamic aici -->
+          </ol>
+        </div>
+      </article>
     </main>
+
     <footer>
       <p>
         extras din
         <a
           href="https://matthiasmedia.com/products/one-to-one-bible-reading"
           target="_blank"
+          rel="noopener"
           >One-to-One Bible Reading</a
         >
         de David Helm
@@ -54,7 +118,8 @@
         <small>Versiunea pentru copii</small>
       </div>
     </footer>
-    <script src="script.js"></script>
+
+    <script src="script.js?v=3.0"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer
