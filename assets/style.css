@@ -1,322 +1,703 @@
-/* Colors used in adult mode:
- * #333 - Dark grey (text, header, footer background)
- * #fff - White (header text, content background)
- * #f5f5f5 - Light grey (body background)
- * #e0e0e0 - Light grey (header h2 text)
- * #0056b3 - Blue (selector label, link color)
- * #ccc - Light grey (week border, questions li border)
- * #666 - Medium grey (week hover border)
- * #ddd - Light grey (content border)
- * #f9f9f9 - Very light grey (questions li background)
- * #555 - Medium grey (text reference color)
- * #003d80 - Dark blue (link hover)
- * #2196f3 - Light blue (toggle switch)
- */
+/* ==========================================================================
+   8 Săptămâni prin Evanghelia după Marcu — sistem vizual
+   Direcție: hârtie · papetărie japoneză modernă · tipografie editorială.
+   Fără umbre, fără carduri — structura se face cu hairlines, spațiu și cifre.
+   ========================================================================== */
 
-/* General Styles */
+:root {
+  color-scheme: light;
+
+  /* Hârtie */
+  --desk: #efebe1; /* „biroul” din jurul foii */
+  --desk-dot: #d6d0c2; /* caroiajul punctat al biroului */
+  --paper: #fbf9f4; /* foaia */
+
+  /* Cerneală */
+  --ink: #1c1b18;
+  --ink-2: #625d53;
+  --ink-3: #9b968b;
+
+  /* Hairlines */
+  --hair: #e6e1d5;
+  --hair-2: #d1cbbc;
+
+  /* Accent — albastru regal, ca o cerneală de stilou */
+  --accent: #2743a6;
+  --accent-hover: #1a2f7f;
+  --accent-pale: #e8ecf8;
+
+  /* Tipografie */
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --gutter: 48px;
+  --ease: 200ms ease;
+}
+
+/* Mod întunecat: aceeași foaie, la lumina lămpii de birou.
+   Implicit urmează sistemul; comutatorul din colofon suprascrie (data-theme). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --desk: #121210;
+    --desk-dot: #24231f;
+    --paper: #1c1b18;
+    --ink: #ebe6da;
+    --ink-2: #a49e91;
+    --ink-3: #6d6860;
+    --hair: #2c2a25;
+    --hair-2: #3b382f;
+    --accent: #8ea3ea;
+    --accent-hover: #b0c0f2;
+    --accent-pale: #262e4a;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --desk: #121210;
+  --desk-dot: #24231f;
+  --paper: #1c1b18;
+  --ink: #ebe6da;
+  --ink-2: #a49e91;
+  --ink-3: #6d6860;
+  --hair: #2c2a25;
+  --hair-2: #3b382f;
+  --accent: #8ea3ea;
+  --accent-hover: #b0c0f2;
+  --accent-pale: #262e4a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* gestul de swipe stânga/dreapta e al nostru — nu „înapoi” în istoric */
+  overscroll-behavior-x: none;
+}
+
 body {
-  font-family: "Arial", sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333; /* Dark grey text */
-  background-color: #f5f5f5; /* Light grey background */
   margin: 0;
+  min-height: 100vh;
+  overscroll-behavior-x: none;
+  background-color: var(--desk);
+  background-image: radial-gradient(var(--desk-dot) 0.8px, transparent 0.9px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.5;
+  transition: background-color var(--ease), color var(--ease);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-pale);
+}
+
+a {
+  color: inherit;
+  transition: color var(--ease), text-decoration-color var(--ease);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
   padding: 0;
+  cursor: pointer;
 }
 
-header {
-  background: #333; /* Dark grey header */
-  color: #fff; /* White text */
-  padding: 1rem 0;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
-header h1 {
-  font-size: 1.5rem;
-  margin: 0.5rem 0.5rem;
-}
+/* --------------------------------------------------------------------------
+   Foaia
+   -------------------------------------------------------------------------- */
 
-header h2 {
-  font-size: 1rem;
-  margin: 0;
-  color: #e0e0e0;
+.sheet {
+  max-width: 760px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--paper);
+  border-left: 1px solid var(--hair-2);
+  border-right: 1px solid var(--hair-2);
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--ease), border-color var(--ease);
 }
 
 main {
-  padding: 1rem;
+  flex: 1;
+  padding: 0 var(--gutter);
+}
+
+/* --------------------------------------------------------------------------
+   Antet (masthead)
+   -------------------------------------------------------------------------- */
+
+.masthead {
+  padding: 60px var(--gutter) 36px;
+  text-align: center;
+}
+
+/* Un mic sigiliu pătrat, ca pe un carnet de papetărie */
+.masthead::before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 0 auto 30px;
+  background: var(--accent);
+  transition: background-color var(--ease);
+}
+
+.masthead h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(30px, 5.6vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  font-variation-settings: "opsz" 72;
+}
+
+.masthead h2 {
+  margin: 18px 0 0;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 11.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* --------------------------------------------------------------------------
+   Cronologia celor 8 săptămâni
+   -------------------------------------------------------------------------- */
+
+.timeline {
+  padding: 0 40px;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+}
+
+.timeline__list {
+  --pos: 0; /* 0 … 1 — cât din traseu e parcurs */
+  --line-y: 40px; /* centrul bilei: padding 18 + rând cifră 16 + 6 */
+  list-style: none;
+  margin: 0;
+  padding: 18px 0 16px;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  position: relative;
+}
+
+/* traseul complet */
+.timeline__list::before {
+  content: "";
+  position: absolute;
+  left: calc(100% / 16);
+  right: calc(100% / 16);
+  top: var(--line-y);
+  border-top: 1px solid var(--hair-2);
+}
+
+/* traseul parcurs */
+.timeline__list::after {
+  content: "";
+  position: absolute;
+  left: calc(100% / 16);
+  width: calc(var(--pos) * (100% - 100% / 8));
+  top: calc(var(--line-y) - 0.5px);
+  border-top: 2px solid var(--accent);
+  transition: width 360ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color var(--ease);
+}
+
+.timeline__step {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 16px 12px auto;
+  justify-items: center;
+  align-items: center;
+  color: var(--ink-3);
+  transition: color var(--ease);
+}
+
+.timeline__nr {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline__tick {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--hair-2);
+  transition: background-color var(--ease), border-color var(--ease),
+    transform var(--ease);
+}
+
+.timeline__ref {
+  margin-top: 9px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink-3);
+  transition: color var(--ease);
+}
+
+.timeline__step:hover .timeline__nr,
+.timeline__step:hover .timeline__ref {
+  color: var(--accent);
+}
+
+.timeline__step.is-past .timeline__nr {
+  color: var(--ink-2);
+}
+
+.timeline__step.is-past .timeline__tick {
+  background: var(--ink-3);
+  border-color: var(--ink-3);
+}
+
+.timeline__step.is-active .timeline__nr {
+  color: var(--accent);
+}
+
+.timeline__step.is-active .timeline__tick {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.6);
+}
+
+.timeline__step.is-active .timeline__ref {
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   Săptămâna curentă
+   -------------------------------------------------------------------------- */
+
+.week__head {
+  padding: 38px 0 18px;
+  border-bottom: 1px solid var(--hair);
+}
+
+#week-title {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  font-weight: 400;
+}
+
+#week-label {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: color var(--ease);
+}
+
+/* Referința biblică: aceeași mărime ca eticheta, dar ca un sigiliu plin de cerneală */
+#text-reference {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 12px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+  background: var(--accent);
+  text-decoration: none;
+  transition: background-color var(--ease), color var(--ease);
+}
+
+#text-reference::after {
+  content: "↗";
+  font-size: 11px;
+  letter-spacing: 0;
+  opacity: 0.8;
+}
+
+#text-reference:hover {
+  background: var(--accent-hover);
+  color: var(--paper);
+}
+
+#text-reference:empty {
+  display: none;
+}
+
+/* Întrebările: numerotate în marginea din stânga, despărțite de hairlines */
+.questions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: q;
+}
+
+.questions li {
+  counter-increment: q;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  column-gap: 16px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--serif);
+  font-size: 20.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.questions li::before {
+  content: counter(q, decimal-leading-zero);
+  padding-top: 9px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  transition: color var(--ease);
+}
+
+.questions li.error {
+  grid-template-columns: 1fr;
+  font-style: italic;
+  color: var(--ink-2);
+}
+
+.questions li.error::before {
+  content: none;
+}
+
+/* Intrarea conținutului la schimbarea săptămânii (în direcția gestului) */
+.week__body.enter-from-right {
+  animation: enter-from-right 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.week__body.enter-from-left {
+  animation: enter-from-left 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes enter-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes enter-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Paginare: săptămâna anterioară / următoare
+   -------------------------------------------------------------------------- */
+
+.pager {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 16px;
+  padding: 22px 0 44px;
+}
+
+.pager__btn {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 44px;
+  padding: 6px 0;
+  text-align: left;
 }
 
-#week-selector {
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Vertically align label and dropdown */
-  justify-content: center; /* Center the content */
-  gap: 0.5rem; /* Add spacing between label and dropdown */
-  margin-bottom: 0.5rem; /* Reduce space between selector and next content div */
-  text-align: center;
+.pager__btn--next {
+  align-items: flex-end;
+  text-align: right;
 }
 
-#week-selector label {
-  font-size: 1.2rem; /* Keep enhanced font size */
-  font-weight: bold; /* Keep bold styling */
-  color: #0056b3; /* Keep distinct color */
-  margin-bottom: 0; /* Remove bottom margin */
-  display: inline; /* Ensure it stays inline */
+.pager__btn.is-off {
+  visibility: hidden;
 }
 
-#week {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc; /* Light grey border */
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  color: #333; /* Dark grey text */
-  background-color: #fff; /* White background */
+.pager__lbl {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.2;
+  color: var(--ink);
+  transition: color var(--ease);
 }
 
-#week:hover {
-  border-color: #666; /* Medium grey on hover */
+.pager__ref {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--ink-3);
 }
 
-#content {
-  background: #fff; /* White content background */
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
-  width: 90%;
-  margin: 1.5rem auto;
-  color: #333; /* Dark grey text */
-  border: 1px solid #ddd; /* Light grey border */
-  margin-bottom: 0.5rem; /* Reduce space between content div and footer */
+.pager__btn:hover .pager__lbl {
+  color: var(--accent);
 }
 
-#questions {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.pager__pos {
+  padding-top: 8px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
 }
 
-#questions li {
-  margin: 1rem 0;
-  padding: 1rem;
-  background: #f9f9f9; /* Very light grey for list items */
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  color: #333; /* Dark grey text */
-  border: 1px solid #ccc; /* Light grey border */
-}
-
-#questions li:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-#text-reference {
-  font-size: 1.2rem; /* Increase font size */
-  color: #555;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-#text-link {
-  text-decoration: none;
-  color: #0056b3;
-  font-size: 1.2rem;
-  margin-left: 0.5rem;
-  vertical-align: middle;
-}
-
-#text-link:hover {
-  color: #003d80;
-}
+/* --------------------------------------------------------------------------
+   Colofon
+   -------------------------------------------------------------------------- */
 
 footer {
-  background: #333; /* Dark grey footer */
-  color: #fff; /* White text */
-  text-align: center;
-  padding: 1rem 0;
-  margin-top: 1rem;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 32px;
+  padding: 26px var(--gutter) 40px;
+  border-top: 1px solid var(--hair);
 }
 
 footer p {
   margin: 0;
-  font-size: 0.9rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15.5px;
+  color: var(--ink-2);
 }
 
 footer a {
-  text-decoration: none;
-  color: #fff; /* Match footer text color */
-  font-weight: bold;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--hair-2);
+  text-underline-offset: 4px;
 }
 
 footer a:hover {
-  text-decoration: underline;
+  color: var(--accent);
+  text-decoration-color: var(--accent);
 }
 
-/* Toggle Switch */
+/* Comutatorul „Mod întunecat” */
 .mode-toggle {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 0.5rem;
+  gap: 10px;
+}
+
+.mode-toggle small {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition: color var(--ease);
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
+  width: 36px;
   height: 20px;
-  margin-right: 0.5rem;
+  flex: none;
 }
 
 .switch input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
   opacity: 0;
-  width: 0;
-  height: 0;
+  cursor: pointer;
 }
 
 .slider {
   position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
+  inset: 0;
+  pointer-events: none;
+  background: var(--paper);
+  border: 1px solid var(--hair-2);
+  border-radius: 20px;
+  transition: background-color var(--ease), border-color var(--ease);
 }
 
-.slider:before {
-  position: absolute;
+.slider::before {
   content: "";
-  height: 16px;
-  width: 16px;
+  position: absolute;
+  top: 2px;
   left: 2px;
-  bottom: 2px;
-  background-color: white;
-  transition: 0.4s;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  transition: transform var(--ease), background-color var(--ease);
 }
 
 .switch input:checked + .slider {
-  background-color: #2196f3;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
-.switch input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+.switch input:checked + .slider::before {
+  background: var(--paper);
+  transform: translateX(16px);
 }
 
-.switch input:checked + .slider:before {
-  transform: translateX(20px);
+.switch input:focus-visible + .slider {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
-.slider.round {
-  border-radius: 20px;
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  .timeline__ref {
+    display: none;
+  }
+
+  .timeline__step {
+    grid-template-rows: 16px 12px;
+  }
 }
 
-.slider.round:before {
-  border-radius: 50%;
-}
+@media (max-width: 640px) {
+  :root {
+    --gutter: 22px;
+  }
 
-/* Kids Mode Styles */
-body.kids-mode {
-  font-family: "Open Sans", "Segoe UI", sans-serif;
-  background-color: #eef7fb; /* Very light blue */
-  color: #223344; /* Dark navy blue text */
-}
-
-body.kids-mode header {
-  background: #223344; /* Dark navy blue */
-  padding: 1.2rem 0;
-}
-
-body.kids-mode header h1 {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #ffffff; /* White */
-}
-
-body.kids-mode header h2 {
-  color: #d0e2f2; /* Light blue grey */
-}
-
-body.kids-mode #content {
-  background: #ffffff; /* White */
-  border: 1px solid #d8e5f0; /* Very soft blue grey */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(34, 51, 68, 0.05); /* Subtle shadow using dark navy */
-}
-
-body.kids-mode #questions li {
-  background: #f1faf9; /* Very light mint */
-  border-left: 3px solid #00a8cc; /* Bright teal */
-  border-top: none;
-  border-right: none;
-  border-bottom: 1px solid #cbd5e1; /* Soft grey */
-  border-radius: 0;
-  transition: all 0.2s ease;
-  color: #223344; /* Dark navy blue text */
-}
-
-body.kids-mode #questions li:hover {
-  background: #eef7fb; /* Very light blue */
-  transform: translateX(3px);
-  box-shadow: 0 1px 5px rgba(0, 168, 204, 0.1); /* Subtle shadow using bright teal */
-}
-
-body.kids-mode footer {
-  background: #223344; /* Dark navy blue */
-  color: #ffffff; /* White */
-}
-
-body.kids-mode #week-selector label {
-  color: #00a8cc; /* Bright teal */
-  font-weight: bold;
-}
-
-body.kids-mode #text-reference {
-  color: #5f7990; /* Muted blue grey */
-  font-weight: 500;
-}
-
-body.kids-mode .switch input:checked + .slider {
-  background-color: #4fc3f7; /* Bright sky blue */
-}
-
-body.kids-mode #week {
-  border: 1px solid #8da9c4; /* Medium blue grey */
-  color: #223344; /* Dark navy blue */
-}
-
-body.kids-mode #week-title {
-  color: #00a8cc; /* Bright teal */
-}
-
-body.kids-mode a {
-  color: #00a8cc; /* Bright teal */
-}
-
-body.kids-mode a:hover {
-  color: #0086a3; /* Deep teal */
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
   body {
-    font-size: 0.9rem;
+    background-image: none;
+    background-color: var(--paper);
   }
 
-  #week {
-    width: 100%;
+  .sheet {
+    border-left: 0;
+    border-right: 0;
   }
 
-  #content {
-    padding: 1rem;
-    width: 92%;
+  .masthead {
+    padding: 44px var(--gutter) 28px;
+  }
+
+  .masthead::before {
+    margin-bottom: 24px;
+  }
+
+  .masthead h2 {
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-wrap: balance;
+  }
+
+  .timeline {
+    padding: 0 10px;
+  }
+
+  .week__head {
+    padding: 30px 0 16px;
+  }
+
+  .questions li {
+    grid-template-columns: 30px minmax(0, 1fr);
+    column-gap: 12px;
+    padding: 18px 0;
+    font-size: 18.5px;
+  }
+
+  .questions li::before {
+    padding-top: 8px;
+  }
+
+  .pager {
+    padding: 18px 0 36px;
+  }
+
+  .pager__lbl {
+    font-size: 16px;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .sheet {
+    border: 0;
+    max-width: none;
+  }
+
+  .pager,
+  .mode-toggle {
+    display: none;
   }
 }

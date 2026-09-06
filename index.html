@@ -1,60 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>8 Săptămâni prin Evanghelia după Marcu</title>
-    <link rel="stylesheet" href="assets/style.css?v=2.0" />
+    <meta name="theme-color" content="#fbf9f4" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "dark" || t === "light") {
+            document.documentElement.setAttribute("data-theme", t);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css?v=3.0" />
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Ctext y='28' font-size='28'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E"
     />
   </head>
   <body>
-    <header>
-      <h1>8 Săptămâni prin Evanghelia după Marcu</h1>
-      <h2>ghid de discuție pentru întâlniri unu-la-unu</h2>
-    </header>
-    <main>
-      <section id="week-selector">
-        <label for="week">Săptămâna:</label>
-        <select id="week">
-          <option value="1">unu</option>
-          <option value="2">doi</option>
-          <option value="3">trei</option>
-          <option value="4">patru</option>
-          <option value="5">cinci</option>
-          <option value="6">șase</option>
-          <option value="7">șapte</option>
-          <option value="8">opt</option>
-        </select>
-      </section>
-      <section id="content">
-        <h2 id="week-title">Săptămâna 1</h2>
-        <ul id="questions">
-          <!-- Întrebările vor fi încărcate dinamic aici -->
-        </ul>
-      </section>
-    </main>
-    <footer>
-      <p>
-        extras din
-        <a
-          href="https://matthiasmedia.com/products/one-to-one-bible-reading"
-          target="_blank"
-          >One-to-One Bible Reading</a
-        >
-        de David Helm
-      </p>
-      <div class="mode-toggle">
-        <label class="switch">
-          <input type="checkbox" id="mode-toggle" />
-          <span class="slider round"></span>
-        </label>
-        <small>Versiunea pentru copii</small>
-      </div>
-    </footer>
-    <script src="script.js"></script>
+    <div class="sheet">
+      <header class="masthead">
+        <h1>8 Săptămâni prin Evanghelia după Marcu</h1>
+        <h2>ghid de discuție pentru întâlniri unu-la-unu</h2>
+      </header>
+
+      <nav class="timeline" aria-label="Săptămânile planului">
+        <ol id="timeline" class="timeline__list" style="--pos: 0">
+          <!-- Cele 8 săptămâni sunt generate dinamic aici -->
+        </ol>
+      </nav>
+
+      <main>
+        <section id="content" class="week">
+          <div id="week-body" class="week__body">
+            <header class="week__head">
+              <h2 id="week-title">
+                <span id="week-label">Săptămâna 1</span>
+                <a id="text-reference" target="_blank" rel="noopener"></a>
+              </h2>
+            </header>
+            <ol id="questions" class="questions">
+              <!-- Întrebările vor fi încărcate dinamic aici -->
+            </ol>
+          </div>
+          <nav class="pager" aria-label="Săptămâna anterioară / următoare">
+            <button type="button" id="prev" class="pager__btn pager__btn--prev"></button>
+            <span id="pager-pos" class="pager__pos"></span>
+            <button type="button" id="next" class="pager__btn pager__btn--next"></button>
+          </nav>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          extras din
+          <a
+            href="https://matthiasmedia.com/products/one-to-one-bible-reading"
+            target="_blank"
+            rel="noopener"
+            >One-to-One Bible Reading</a
+          >
+          de David Helm
+        </p>
+        <div class="mode-toggle">
+          <label class="switch">
+            <input type="checkbox" id="theme-toggle" />
+            <span class="slider round"></span>
+          </label>
+          <small>Mod întunecat</small>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js?v=3.0"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer
